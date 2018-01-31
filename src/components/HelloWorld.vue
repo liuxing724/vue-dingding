@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button @click="test">测试钉钉</button>
     <h2>Essential Links</h2>
     <ul>
       <li>
@@ -84,11 +85,45 @@
 </template>
 
 <script>
+  const testFun = function (fn) {
+    return dd.ready(fn);
+  }
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods:{
+    test(){
+      /*dd.ready(function(){
+        dd.device.notification.confirm({
+          message: "你爱我吗",
+          title: "提示",
+          buttonLabels: ['爱', '不爱'],
+          onSuccess : function(result) {
+            //onSuccess将在点击button之后回调
+            /!*
+            {
+                buttonIndex: 0 //被点击按钮的索引值，Number类型，从0开始
+            }
+            *!/
+          },
+          onFail : function(err) {}
+        });
+      });*/
+      testFun(function () {
+        dd.device.notification.confirm({
+          message: "你爱我吗",
+          title: "提示",
+          buttonLabels: ['爱', '不爱'],
+          onSuccess : function(result) {
+            //onSuccess将在点击button之后回调
+          },
+          onFail : function(err) {}
+        });
+      })
     }
   }
 }
