@@ -2,92 +2,17 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <button @click="test">测试钉钉</button>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <button @click ="getToken">获取Access_Token</button>
+    <button @click ="getCode">获取免登授权码</button>
   </div>
 </template>
 
 <script>
-  const testFun = function (fn) {
-    return dd.ready(fn);
-  }
+  /*const testFun = function (fn) {
+    return fn;
+  }*/
+  import axios from 'axios';
+  import $ from 'jquery';
 export default {
   name: 'HelloWorld',
   data () {
@@ -97,33 +22,78 @@ export default {
   },
   methods:{
     test(){
-      /*dd.ready(function(){
+      alert("1111");
+      dd.ready(function(){
         dd.device.notification.confirm({
           message: "你爱我吗",
           title: "提示",
           buttonLabels: ['爱', '不爱'],
           onSuccess : function(result) {
             //onSuccess将在点击button之后回调
-            /!*
+            /*
             {
                 buttonIndex: 0 //被点击按钮的索引值，Number类型，从0开始
             }
-            *!/
+            */
           },
           onFail : function(err) {}
         });
-      });*/
-      testFun(function () {
-        dd.device.notification.confirm({
-          message: "你爱我吗",
-          title: "提示",
-          buttonLabels: ['爱', '不爱'],
-          onSuccess : function(result) {
-            //onSuccess将在点击button之后回调
+      });
+    },
+    getToken(){
+      $.getJSON("https://oapi.dingtalk.com/gettoken?corpid=ding1bab1fa0d668917835c2f4657eb6378f&corpsecret=H1u9Reh7ySi9G6-eakZyGEHrwBP8VD4P8wPIjJMkrdSZ_46xoXW-fTgt8isQovuF&jsoncallback=?",function(json){
+        console.log(json);
+      });
+      /*$.ajax({
+        type:'get',
+        url: 'https://oapi.dingtalk.com/gettoken',
+        data: {
+          corpid: 'ding1bab1fa0d668917835c2f4657eb6378f',
+          corpsecret: 'H1u9Reh7ySi9G6-eakZyGEHrwBP8VD4P8wPIjJMkrdSZ_46xoXW-fTgt8isQovuF'
+        },
+        crossDomain: true,
+        dataType:'jsonp',
+        success: function (data, textStatus) {
+          console.log(data);
+          console.log(textStatus);
+        },
+        error: function (err) {
+          console.log("没找到");
+          console.log(err);
+        }
+      })*/
+      /*axios.get('https://oapi.dingtalk.com/gettoken',
+        {
+          params: {
+            corpid: 'ding1bab1fa0d668917835c2f4657eb6378f',
+            corpsecret: 'H1u9Reh7ySi9G6-eakZyGEHrwBP8VD4P8wPIjJMkrdSZ_46xoXW-fTgt8isQovuF'
           },
-          onFail : function(err) {}
+        })
+        .then((response) => {
+          alert('success');
+          console.log(response);
+        })
+        .catch((error) => {
+          alert('failed');
+          console.log(error);
+        })*/
+    },
+    getCode(){
+      alert('2222');
+      dd.ready(function() {
+        dd.runtime.permission.requestAuthCode({
+          corpId: "ding1bab1fa0d668917835c2f4657eb6378f",
+          onSuccess: function(result) {
+            alert('success');
+            alert(result);
+          },
+          onFail : function(err) {
+            alert('failed');
+            alert(err.toString());
+          }
+
         });
-      })
+      });
     }
   }
 }
